@@ -1,11 +1,11 @@
 const Provider = require('../models/providersSchema')
 const Product = require('../models/productsSchema')
 
-// GET -> http://localhost:3000/api/products/search
+// GET -> http://localhost:3000/api/products
 // Obtiene products de la BBDD según su título y/o Provider
 
 const getProductsByTitleOrProvider = async (req, res) => {
-    const { title, provider, page } = req.query
+    const { title, provider, page, sorttype, sort } = req.query
 
     let products = []
 
@@ -15,50 +15,221 @@ const getProductsByTitleOrProvider = async (req, res) => {
     let titleRegex = new RegExp(`${title}`);
     let providerRegex = new RegExp(`${provider}`);
 
-    if(title && provider) {
-        const searchProvider = await Provider.find({name: { $regex: providerRegex, $options: "i" }}, {returnOriginal: false});
-
-        if(searchProvider.length) {
-
-            for(let i = 0; i < searchProvider.length; i++) {
-                const provider_id = searchProvider[i]._id.toString()
-                const newProducts = await Product
-                    .find({
-                        title: { $regex: titleRegex, $options: "i" },
-                        provider: provider_id,
-                        }, "-_id -__v")
-                    .populate('provider', 'name -_id')
-                    .select('title description price relevance image provider -_id')
-                    .limit(10)
-                    .skip(skipIndex)
-
-                products.push(...newProducts)
+    if(title || provider) {
+        if(title && provider) {
+            const searchProvider = await Provider.find({name: { $regex: providerRegex, $options: "i" }}, {returnOriginal: false});
+    
+            if(searchProvider.length) {
+                const productsList = []
+    
+                    for(let i = 0; i < searchProvider.length; i++) {
+                        const provider_id = searchProvider[i]._id.toString()
+                        const newProducts = await Product
+                        .find({
+                            title: { $regex: titleRegex, $options: "i" },
+                            provider: provider_id,
+                            }, "-_id -__v")
+                        .populate('provider', 'name -_id')
+                        .select('title description price relevance image provider -_id')
+                        .limit(10)
+                        .skip(skipIndex)
+    
+                        productsList.push(...newProducts)
+                    }
+    
+                    switch(sorttype) {
+                        case "title":
+                            if(sort == "asc") {
+                                productsList.sort((a, b) => {
+                                    return a.title.localeCompare(b.title)
+                                })
+    
+                                productsList.reverse()
+                            } else {
+                                productsList.sort((a, b) => {
+                                    return a.title.localeCompare(b.title)
+                                })
+                            }
+                            products.push(...productsList)
+                            break;
+    
+                        case "relevance":
+                            if(sort == "asc") {
+                                productsList.sort((a, b) => {
+                                    return a.relevance - b.relevance
+                                })
+                            } else {
+                                productsList.sort((a, b) => {
+                                    return b.relevance - a.relevance
+                                })
+                            }
+                            products.push(...productsList)
+                            break;
+    
+                        case "price":
+                            if(sort == "asc") {
+                                productsList.sort((a, b) => {
+                                    return a.price - b.price
+                                })
+                            } else {
+                                productsList.sort((a, b) => {
+                                    return b.price - a.price
+                                })
+                            }
+                            products.push(...productsList)
+                            break;
+                    }
+            }
+        } else {
+            if(title) {
+                switch(sorttype) {
+                    case "title":
+                        if(sort == "asc") {
+                            products = await Product
+                            .find({
+                                title: { $regex: titleRegex, $options: "i" },
+                                }, "-_id -__v")
+                            .populate('provider', 'name -_id')
+                            .select('title description price relevance image provider -_id')
+                            .sort({title: "asc"})
+                            .limit(10)
+                            .skip(skipIndex)
+                        } else {
+                            products = await Product
+                            .find({
+                                title: { $regex: titleRegex, $options: "i" },
+                                }, "-_id -__v")
+                            .populate('provider', 'name -_id')
+                            .select('title description price relevance image provider -_id')
+                            .sort({title: "desc"})
+                            .limit(10)
+                            .skip(skipIndex)
+                        }
+                        break;
+    
+                    case "price":
+                        if(sort == "asc") {
+                            products = await Product
+                            .find({
+                                title: { $regex: titleRegex, $options: "i" },
+                                }, "-_id -__v")
+                            .populate('provider', 'name -_id')
+                            .select('title description price relevance image provider -_id')
+                            .sort({price: "asc"})
+                            .limit(10)
+                            .skip(skipIndex)
+                        } else {
+                            products = await Product
+                            .find({
+                                title: { $regex: titleRegex, $options: "i" },
+                                }, "-_id -__v")
+                            .populate('provider', 'name -_id')
+                            .select('title description price relevance image provider -_id')
+                            .sort({price: "desc"})
+                            .limit(10)
+                            .skip(skipIndex)
+                        }
+                        break;
+    
+                    case "relevance":
+                    if(sort == "asc") {
+                        products = await Product
+                        .find({
+                            title: { $regex: titleRegex, $options: "i" },
+                            }, "-_id -__v")
+                        .populate('provider', 'name -_id')
+                        .select('title description price relevance image provider -_id')
+                        .sort({relevance: "asc"})
+                        .limit(10)
+                        .skip(skipIndex)
+                    } else {
+                        products = await Product
+                        .find({
+                            title: { $regex: titleRegex, $options: "i" },
+                            }, "-_id -__v")
+                        .populate('provider', 'name -_id')
+                        .select('title description price relevance image provider -_id')
+                        .sort({relevance: "desc"})
+                        .limit(10)
+                        .skip(skipIndex)
+                    }
+                    break;
+                }
+            }
+        
+            else if(provider) {
+                const searchProvider = await Provider.find({name: { $regex: providerRegex, $options: "i" }}, {returnOriginal: false});
+    
+                if(searchProvider.length) {
+                    const productsList = []
+    
+                    for(let i = 0; i < searchProvider.length; i++) {
+                        const provider_id = searchProvider[i]._id.toString()
+                        const newProducts = await Product
+                        .find({
+                            provider: provider_id,
+                            }, "-_id -__v")
+                        .populate('provider', 'name -_id')
+                        .select('title description price relevance image provider -_id')
+                        .limit(10)
+                        .skip(skipIndex)
+    
+                        productsList.push(...newProducts)
+                    }
+    
+                    switch(sorttype) {
+                        case "title":
+                            if(sort == "asc") {
+                                productsList.sort((a, b) => {
+                                    return a.title.localeCompare(b.title)
+                                })
+    
+                                productsList.reverse()
+                            } else {
+                                productsList.sort((a, b) => {
+                                    return a.title.localeCompare(b.title)
+                                })
+                            }
+                            products.push(...productsList)
+                            break;
+    
+                        case "relevance":
+                            if(sort == "asc") {
+                                productsList.sort((a, b) => {
+                                    return a.relevance - b.relevance
+                                })
+                            } else {
+                                productsList.sort((a, b) => {
+                                    return b.relevance - a.relevance
+                                })
+                            }
+                            products.push(...productsList)
+                            break;
+    
+                        case "price":
+                            if(sort == "asc") {
+                                productsList.sort((a, b) => {
+                                    return a.price - b.price
+                                })
+                            } else {
+                                productsList.sort((a, b) => {
+                                    return b.price - a.price
+                                })
+                            }
+                            products.push(...productsList)
+                            break;
+                    }
+                }
             }
         }
     } else {
-        if(title) {
+        if(page) {
             products = await Product
-            .find({
-                title: { $regex: titleRegex, $options: "i" },
-                }, "-_id -__v")
+            .find()
+            .populate('provider', 'name -_id')
+            .select('title description price relevance image provider -_id')
             .limit(10)
             .skip(skipIndex)
-        }
-    
-        else if(provider) {
-            const searchProvider = await Provider.find({name: providerRegex}, {returnOriginal: false});
-
-            if(searchProvider.length) {
-                const provider_id = searchProvider[0]._id.toString()
-                products = await Product
-                .find({
-                    provider: provider_id,
-                    }, "-_id -__v")
-                .populate('provider', 'name -_id')
-                .select('title description price relevance image provider -_id')
-                .limit(10)
-                .skip(skipIndex)
-            }
         }
     }
 
@@ -68,115 +239,6 @@ const getProductsByTitleOrProvider = async (req, res) => {
         res.status(200).json({
             error: "No products found!"
         })
-    }
-}
-
-// GET -> http://localhost:3000/api/products
-// Obtiene todos los products de la BBDD
-
-const getProducts = async (req, res) => {
-    let products = [];
-    const sortType = req.query.sorttype
-    const sort = req.query.sort
-    const pagination = req.query.page
-    try {
-        if(sortType && pagination && sort) {
-            const page = parseInt(pagination);
-            const skipIndex = (page - 1) * 10;
-            switch(sortType) {
-                case "title":
-                    if(sort == "asc") {
-                        products = await Product
-                        .find()
-                        .populate('provider', 'name -_id')
-                        .select('title description price relevance image provider -_id')
-                        .sort({title: "asc"})
-                        .limit(10)
-                        .skip(skipIndex)
-                    } else {
-                        products = await Product
-                        .find()
-                        .populate('provider', 'name -_id')
-                        .select('title description price relevance image provider -_id')
-                        .sort({title: "desc"})
-                        .limit(10)
-                        .skip(skipIndex)
-                    }
-                    break;
-
-                case "price":
-                    if(sort == "asc") {
-                        products = await Product
-                        .find()
-                        .populate('provider', 'name -_id')
-                        .select('title description price relevance image provider -_id')
-                        .sort({price: "asc", title: "asc"})
-                        .limit(10)
-                        .skip(skipIndex)
-                    } else {
-                        products = await Product
-                        .find()
-                        .populate('provider', 'name -_id')
-                        .select('title description price relevance image provider -_id')
-                        .sort({price: "desc", title: "desc"})
-                        .limit(10)
-                        .skip(skipIndex)
-                    }
-                    break;
-
-                case "relevance":
-                    if(sort == "asc") {
-                        products = await Product
-                        .find()
-                        .populate('provider', 'name -_id')
-                        .select('title description price relevance image provider -_id')
-                        .sort({relevance: "asc", title: "asc"})
-                        .limit(10)
-                        .skip(skipIndex)
-                    } else {
-                        products = await Product
-                        .find()
-                        .populate('provider', 'name -_id')
-                        .select('title description price relevance image provider -_id')
-                        .sort({relevance: "desc", title: "desc"})
-                        .limit(10)
-                        .skip(skipIndex)
-                    }
-                    break;
-
-                    default:
-                    products = await Product
-                    .find()
-                    .populate('provider', 'name -_id')
-                    .select('title description price relevance image provider -_id')
-                    break;
-            }
-
-            // Check if products exist
-            if(products.length) {
-                res.status(200).json(products)
-            } else {
-                res.status(200).json({
-                    error: "No products found!"
-                })
-            }
-        } else {
-            products = await Product
-            .find()
-            .populate('provider', 'name -_id')
-            .select('title description price relevance image provider -_id')
-
-            if(products.length) {
-                res.status(200).json(products)
-            } else {
-                res.status(200).json({
-                    error: "No products found!"
-                })
-            }
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({error})
     }
 }
 
@@ -273,7 +335,6 @@ const deleteProduct = async (req, res) => {
 }
 
 module.exports = {
-    getProducts,
     getProductsByTitleOrProvider,
     createProduct,
     updateProduct,
