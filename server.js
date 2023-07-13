@@ -1,17 +1,21 @@
-// *SERVER
 const express = require('express');
 const path = require('path');
 require('dotenv').config()
 
+// Routers
+const providersApiRouter = require('./routes/providersRoutes')
+const productsApiRouter = require('./routes/productsRoutes')
+
+// Connect MongoDB
+const connectDB = require('./utils/mongodb');
+connectDB();
+
 const app = express();
-//*MIDDLEWARE
-//  replaced body parser
 app.use(express.json({ extended: false }));
 
-//*TEST ROUTE
-app.use('/test',(req,res)=>{
-    res.send('Welcome to GeeksforGeeks');
-})
+// Routes
+app.use('/api/providers', providersApiRouter)
+app.use('/api/products', productsApiRouter)
 
 //* Serve static assets in production, must be at this location of this file
 if (process.env.NODE_ENV === 'production') {
