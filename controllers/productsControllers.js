@@ -1,17 +1,56 @@
 const Provider = require('../models/providersSchema')
 const Product = require('../models/productsSchema')
 
-// GET -> http://localhost:3000/api/products/:title
-// Obtiene products de la BBDD según su título contenga 'title'
+// GET -> http://localhost:3000/api/products/search
+// Obtiene products de la BBDD según su título y/o Provider
 
-const getProductsByTitle = async (req, res) => {
-    const { title } = req.params
+const getProductsByTitleOrProvider = async (req, res) => {
+    const { title, provider } = req.query
+
+    let products = []
 
     let titleRegex = new RegExp(`${title}`);
+    let providerRegex = new RegExp(`${provider}`);
 
-    let products = await Product.find({
-          title: { $regex: titleRegex, $options: "i" },
-        }, "-_id -__v");
+    if(title && provider) {
+        const searchProvider = await Provider.find({name: { $regex: providerRegex, $options: "i" }}, {returnOriginal: false});
+
+        if(searchProvider.length) {
+
+            for(let i = 0; i < searchProvider.length; i++) {
+                const provider_id = searchProvider[i]._id.toString()
+                const newProducts = await Product
+                    .find({
+                        title: { $regex: titleRegex, $options: "i" },
+                        provider: provider_id,
+                        }, "-_id -__v")
+                    .populate('provider', 'name -_id')
+                        .select('title description price relevance image provider -_id')
+
+                products.push(...newProducts)
+            }
+        }
+    } else {
+        if(title) {
+            products = await Product.find({
+                title: { $regex: titleRegex, $options: "i" },
+                }, "-_id -__v");
+        }
+    
+        else if(provider) {
+            const searchProvider = await Provider.find({name: providerRegex}, {returnOriginal: false});
+
+            if(searchProvider.length) {
+                const provider_id = searchProvider[0]._id.toString()
+                products = await Product
+                .find({
+                    provider: provider_id,
+                    }, "-_id -__v")
+                .populate('provider', 'name -_id')
+                    .select('title description price relevance image provider -_id')
+            }
+        }
+    }
 
     if(products.length) {
         res.status(200).json(products)
@@ -226,7 +265,7 @@ const deleteProduct = async (req, res) => {
 
 module.exports = {
     getProducts,
-    getProductsByTitle,
+    getProductsByTitleOrProvider,
     createProduct,
     updateProduct,
     deleteProduct
