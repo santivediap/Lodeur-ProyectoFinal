@@ -5,9 +5,12 @@ const Product = require('../models/productsSchema')
 // Obtiene products de la BBDD según su título y/o Provider
 
 const getProductsByTitleOrProvider = async (req, res) => {
-    const { title, provider } = req.query
+    const { title, provider, page } = req.query
 
     let products = []
+
+    const pages = parseInt(page);
+    const skipIndex = (pages - 1) * 10;
 
     let titleRegex = new RegExp(`${title}`);
     let providerRegex = new RegExp(`${provider}`);
@@ -25,16 +28,21 @@ const getProductsByTitleOrProvider = async (req, res) => {
                         provider: provider_id,
                         }, "-_id -__v")
                     .populate('provider', 'name -_id')
-                        .select('title description price relevance image provider -_id')
+                    .select('title description price relevance image provider -_id')
+                    .limit(10)
+                    .skip(skipIndex)
 
                 products.push(...newProducts)
             }
         }
     } else {
         if(title) {
-            products = await Product.find({
+            products = await Product
+            .find({
                 title: { $regex: titleRegex, $options: "i" },
-                }, "-_id -__v");
+                }, "-_id -__v")
+            .limit(10)
+            .skip(skipIndex)
         }
     
         else if(provider) {
@@ -47,7 +55,9 @@ const getProductsByTitleOrProvider = async (req, res) => {
                     provider: provider_id,
                     }, "-_id -__v")
                 .populate('provider', 'name -_id')
-                    .select('title description price relevance image provider -_id')
+                .select('title description price relevance image provider -_id')
+                .limit(10)
+                .skip(skipIndex)
             }
         }
     }
@@ -83,7 +93,6 @@ const getProducts = async (req, res) => {
                         .sort({title: "asc"})
                         .limit(10)
                         .skip(skipIndex)
-
                     } else {
                         products = await Product
                         .find()
