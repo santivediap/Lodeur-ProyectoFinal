@@ -2,7 +2,8 @@
     "dependencies": {
         "config": "^3.3.7",
         "express": "^4.18.1",
-        "mongoose": "^6.5.4",
+        "mongodb": "^5.7.0",
+        "mongoose": "^6.11.3",
         "node-statsd": "^0.1.1",
         "response-time": "^2.3.2"
     },
@@ -18,7 +19,8 @@
         "clientinstall": "npm install --prefix client",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
         "deploy": "concurrently \"npm run server\" \"npm run client\"",
-        "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+        "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+        "seed_db": "node seed/seeder.js"
     },
     "name": "lodeur",
     "version": "1.0.0",
