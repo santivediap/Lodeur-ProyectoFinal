@@ -117,7 +117,14 @@ const getProducts = async (req, res) => {
             .find()
             .populate('provider', 'name -_id')
             .select('title description price relevance image provider -_id')
-            res.status(200).json(products)
+
+            if(products.length) {
+                res.status(200).json(products)
+            } else {
+                res.status(200).json({
+                    error: "No products found!"
+                })
+            }
         }
     } catch (error) {
         console.log(error);

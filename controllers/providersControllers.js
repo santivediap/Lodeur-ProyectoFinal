@@ -27,7 +27,14 @@ const getProvidersByName = async (req, res) => {
 const getProviders = async (req, res) => {
     try {
         const providers = await Provider.find({}, '-_id -__v');
-        res.json(providers)
+
+        if(providers.length) {
+          res.status(200).json(providers)
+        } else {
+          res.status(200).json({
+            error: "No providers found!"
+          })
+        }
     } catch (error) {
         console.error(error);
         res.json({ error: "Internal server error" });
