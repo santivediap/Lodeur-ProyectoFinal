@@ -1,26 +1,5 @@
 const Provider = require('../models/providersSchema')
 
-// GET -> http://localhost:3000/api/providers/:title
-// Obtiene providers de la BBDD según su título contenga 'title'
-
-const getProvidersByName = async (req, res) => {
-  const { name } = req.params
-
-  let titleRegex = new RegExp(`${name}`);
-
-  let providers = await Provider.find({
-        name: { $regex: titleRegex, $options: "i" },
-      }, "-_id -__v");
-
-  if(providers.length) {
-      res.status(200).json(providers)
-  } else {
-      res.status(200).json({
-          error: "No providers found!"
-      })
-  }
-}
-
 // GET -> http://localhost:3000/api/providers
 // Obtiene todos los providers de la BBDD
 
@@ -92,7 +71,6 @@ const deleteProvider = async (req, res) => {
 
 module.exports = {
     getProviders,
-    getProvidersByName,
     createProvider,
     deleteProvider
 }
