@@ -1,0 +1,11 @@
+nav {
+    padding: 1%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & > img {
+        width: 32%;
+        object-fit: contain;
+    }
+}
