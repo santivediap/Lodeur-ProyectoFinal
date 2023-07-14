@@ -1,0 +1,20 @@
+@import '../utils/variables.scss';
+@import 'https://fonts.googleapis.com/css?family=Inter:300,400,600,700';
+
+#root {
+    text-align: center;
+    margin:0px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: $background-primary-color;
+}
+
+body {
+    margin: 0;
+}
+
+* {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+}

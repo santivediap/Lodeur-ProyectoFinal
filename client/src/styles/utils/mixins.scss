@@ -1,0 +1,6 @@
+@import './variables.scss';
+
+@mixin base_header_footer {
+    width: 100%;
+    background-color: $primary-color;
+}
