@@ -1,0 +1,12 @@
+@import '../utils/variables.scss';
+@import '../utils/mixins.scss';
+
+footer {
+    @include base_header_footer;
+
+    margin-top: auto;
+
+    & > .footer-container {
+        padding: 5.965%;
+    }
+}
