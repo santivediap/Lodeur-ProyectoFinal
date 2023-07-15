@@ -1,0 +1,53 @@
+@import '../utils/mixins.scss';
+@import 'https://fonts.googleapis.com/css?family=Jaldi:300,400,600,700';
+
+.product-container {
+    background-color: white;
+    border: .2vw solid black;
+    border-radius: 1vw 1vw;
+    width: 45%;
+    min-height: 50vw;
+    max-height: 80vw;
+    margin-bottom: 5%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    & > .product-img {
+        margin-top: 4%;
+        width: 80%;
+        aspect-ratio: 4/3;
+        object-fit: contain;
+    }
+
+    & > .product-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        margin-bottom: 5%;
+    
+        & > h2 {
+            font-size: 4vw;
+            font-family: 'Jaldi', Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            text-align: left;
+            margin: 2% 4% 0 8%;
+        }
+    
+        & > p {
+            margin: 0 0 2% 8%;
+            color: #BF1818;
+            font-family: 'Jaldi', Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            font-size: 5vw;
+        }
+    
+        & > img.relevance {
+            width: 65%;
+            object-fit: contain;
+        }
+    }
+}
