@@ -11,7 +11,7 @@
     align-items: center;
     justify-content: center;
 
-    box-shadow: 0px 0px 2vw rgb(189, 189, 189);
+    box-shadow: 0px 1vw 2vw rgb(209, 209, 209);
 
     & > h2 {
         font-family: 'League Spartan';
@@ -58,6 +58,12 @@
             border-radius: 3vw 3vw;
             border: .7vw solid $primary-color;
             font-size: 4vw;
+
+            appearance: none;
+
+            & > option {
+                font-size: 3vw;
+            }
         }
     }
 
@@ -76,4 +82,14 @@
         background: linear-gradient(360deg, rgba(53,53,53,1) 0%, rgba(87,87,87,1) 100%);
         box-shadow: 0px .5vw 2vw rgba(0, 0, 0, 0.511);
     }
+}
+
+.error-message {
+    color: #ff0000;
+    font-size: 5vw;
+    font-weight: 600;
+}
+
+.loader {
+    width: 20%;
 }
