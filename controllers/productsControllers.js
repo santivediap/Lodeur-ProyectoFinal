@@ -31,8 +31,6 @@ const getProductsByTitleOrProvider = async (req, res) => {
                             }, "-_id -__v")
                         .populate('provider', 'name -_id')
                         .select('title description price relevance image provider -_id')
-                        .limit(10)
-                        .skip(skipIndex)
     
                         productsList.push(...newProducts)
                     }
@@ -50,7 +48,13 @@ const getProductsByTitleOrProvider = async (req, res) => {
                                     return a.title.localeCompare(b.title)
                                 })
                             }
-                            products.push(...productsList)
+                            
+                            if(skipIndex > 0) {
+                                let fixedCount = productsList.slice(skipIndex)
+                                products.push(...fixedCount)
+                            } else {
+                                products.push(...productsList.slice(skipIndex, 10))
+                            }
                             break;
     
                         case "relevance":
@@ -63,7 +67,13 @@ const getProductsByTitleOrProvider = async (req, res) => {
                                     return b.relevance - a.relevance
                                 })
                             }
-                            products.push(...productsList)
+
+                            if(skipIndex > 0) {
+                                let fixedCount = productsList.slice(skipIndex)
+                                products.push(...fixedCount)
+                            } else {
+                                products.push(...productsList.slice(skipIndex, 10))
+                            }
                             break;
     
                         case "price":
@@ -76,7 +86,13 @@ const getProductsByTitleOrProvider = async (req, res) => {
                                     return b.price - a.price
                                 })
                             }
-                            products.push(...productsList)
+
+                            if(skipIndex > 0) {
+                                let fixedCount = productsList.slice(skipIndex)
+                                products.push(...fixedCount)
+                            } else {
+                                products.push(...productsList.slice(skipIndex, 10))
+                            }
                             break;
                     }
             }
@@ -171,8 +187,6 @@ const getProductsByTitleOrProvider = async (req, res) => {
                             }, "-_id -__v")
                         .populate('provider', 'name -_id')
                         .select('title description price relevance image provider -_id')
-                        .limit(10)
-                        .skip(skipIndex)
     
                         productsList.push(...newProducts)
                     }
@@ -190,7 +204,13 @@ const getProductsByTitleOrProvider = async (req, res) => {
                                     return a.title.localeCompare(b.title)
                                 })
                             }
-                            products.push(...productsList)
+
+                            if(skipIndex > 0) {
+                                let fixedCount = productsList.slice(skipIndex)
+                                products.push(...fixedCount)
+                            } else {
+                                products.push(...productsList.slice(skipIndex, 10))
+                            }
                             break;
     
                         case "relevance":
@@ -203,7 +223,13 @@ const getProductsByTitleOrProvider = async (req, res) => {
                                     return b.relevance - a.relevance
                                 })
                             }
-                            products.push(...productsList)
+                            
+                            if(skipIndex > 0) {
+                                let fixedCount = productsList.slice(skipIndex)
+                                products.push(...fixedCount)
+                            } else {
+                                products.push(...productsList.slice(skipIndex, 10))
+                            }
                             break;
     
                         case "price":
@@ -216,7 +242,13 @@ const getProductsByTitleOrProvider = async (req, res) => {
                                     return b.price - a.price
                                 })
                             }
-                            products.push(...productsList)
+                            
+                            if(skipIndex > 0) {
+                                let fixedCount = productsList.slice(skipIndex)
+                                products.push(...fixedCount)
+                            } else {
+                                products.push(...productsList.slice(skipIndex, 10))
+                            }
                             break;
                     }
                 }
