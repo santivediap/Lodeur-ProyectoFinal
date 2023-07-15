@@ -14,7 +14,6 @@ const ProductsList = ({ productsList, page, setPage, setProducts }) => {
     const nextPageUrl = page[1].replace(`page=${page[0]}`, `page=${page[0]+1}`)
     const products = await axios.get(nextPageUrl)
     setFollowingProducts(products.data)
-    console.log(products.data);
     setLoading(false)
   }
 
@@ -25,7 +24,6 @@ const ProductsList = ({ productsList, page, setPage, setProducts }) => {
   }, [])
 
   useEffect(() => {
-    console.log("YES");
     setProducts(newProducts)
     searchFollowingProducts()
   }, [newProducts])

@@ -29,7 +29,7 @@ const getProductsByTitleOrProvider = async (req, res) => {
                             title: { $regex: titleRegex, $options: "i" },
                             provider: provider_id,
                             }, "-_id -__v")
-                        .populate('provider', 'name -_id')
+                        .populate('provider', 'name address CIF -_id')
                         .select('title description price relevance image provider -_id')
     
                         productsList.push(...newProducts)
@@ -105,7 +105,7 @@ const getProductsByTitleOrProvider = async (req, res) => {
                             .find({
                                 title: { $regex: titleRegex, $options: "i" },
                                 }, "-_id -__v")
-                            .populate('provider', 'name -_id')
+                            .populate('provider', 'name address CIF -_id')
                             .select('title description price relevance image provider -_id')
                             .sort({title: "asc"})
                             .limit(10)
@@ -115,7 +115,7 @@ const getProductsByTitleOrProvider = async (req, res) => {
                             .find({
                                 title: { $regex: titleRegex, $options: "i" },
                                 }, "-_id -__v")
-                            .populate('provider', 'name -_id')
+                            .populate('provider', 'name address CIF -_id')
                             .select('title description price relevance image provider -_id')
                             .sort({title: "desc"})
                             .limit(10)
@@ -129,7 +129,7 @@ const getProductsByTitleOrProvider = async (req, res) => {
                             .find({
                                 title: { $regex: titleRegex, $options: "i" },
                                 }, "-_id -__v")
-                            .populate('provider', 'name -_id')
+                            .populate('provider', 'name address CIF -_id')
                             .select('title description price relevance image provider -_id')
                             .sort({price: "asc"})
                             .limit(10)
@@ -139,7 +139,7 @@ const getProductsByTitleOrProvider = async (req, res) => {
                             .find({
                                 title: { $regex: titleRegex, $options: "i" },
                                 }, "-_id -__v")
-                            .populate('provider', 'name -_id')
+                            .populate('provider', 'name address CIF -_id')
                             .select('title description price relevance image provider -_id')
                             .sort({price: "desc"})
                             .limit(10)
@@ -153,7 +153,7 @@ const getProductsByTitleOrProvider = async (req, res) => {
                         .find({
                             title: { $regex: titleRegex, $options: "i" },
                             }, "-_id -__v")
-                        .populate('provider', 'name -_id')
+                        .populate('provider', 'name address CIF -_id')
                         .select('title description price relevance image provider -_id')
                         .sort({relevance: "asc"})
                         .limit(10)
@@ -163,7 +163,7 @@ const getProductsByTitleOrProvider = async (req, res) => {
                         .find({
                             title: { $regex: titleRegex, $options: "i" },
                             }, "-_id -__v")
-                        .populate('provider', 'name -_id')
+                        .populate('provider', 'name address CIF -_id')
                         .select('title description price relevance image provider -_id')
                         .sort({relevance: "desc"})
                         .limit(10)
@@ -185,7 +185,7 @@ const getProductsByTitleOrProvider = async (req, res) => {
                         .find({
                             provider: provider_id,
                             }, "-_id -__v")
-                        .populate('provider', 'name -_id')
+                        .populate('provider', 'name address CIF -_id')
                         .select('title description price relevance image provider -_id')
     
                         productsList.push(...newProducts)
@@ -258,7 +258,7 @@ const getProductsByTitleOrProvider = async (req, res) => {
         if(page) {
             products = await Product
             .find()
-            .populate('provider', 'name -_id')
+            .populate('provider', 'name address CIF -_id')
             .select('title description price relevance image provider -_id')
             .limit(10)
             .skip(skipIndex)

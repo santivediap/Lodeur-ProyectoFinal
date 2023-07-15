@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from 'axios'
 import { ThreeDots } from  'react-loader-spinner'
 import LoadingContext from "../../../context/loadingContext";
@@ -10,6 +10,10 @@ const Search = ({ setProducts, setPage }) => {
   const [errorMessage, setErrorMessage] = useState("")
 
   const { loading, setLoading } = useContext(LoadingContext)
+
+  useEffect(() => {
+    searchProducts({page: 1})
+  }, [])
 
   const changeProductInput = (e) => {
     setProductInput(e.target.value)
@@ -80,10 +84,16 @@ const Search = ({ setProducts, setPage }) => {
         setPage([page, `/api/products?page=1&provider=${provider}&sorttype=${sortType}&sort=${sort}`])
         setLoading(false)
         setProducts(products.data)
-      } else {
+      } else if(product) {
         setLoading(true)
         const products = await axios.get(`/api/products?page=1&title=${product}&sorttype=${sortType}&sort=${sort}`)
         setPage([page, `/api/products?page=1&title=${product}&sorttype=${sortType}&sort=${sort}`])
+        setLoading(false)
+        setProducts(products.data)
+      } else {
+        setLoading(true)
+        const products = await axios.get(`/api/products?page=1`)
+        setPage([page, `/api/products?page=1`])
         setLoading(false)
         setProducts(products.data)
       }
