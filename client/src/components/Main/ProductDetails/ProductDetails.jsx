@@ -35,15 +35,25 @@ const ProductDetails = () => {
   const searchProduct = async () => {
     setLoading(true)
     const product = await axios.get(`/api/products?page=1&title=${title}&sorttype=title&sort=asc`)
-    setProductDetails(product.data[0])
-    setLoading(false)
+    if(product.data[0]) {
+      setProductDetails(product.data[0])
+      setLoading(false)
+    } else {
+      setProductDetails(product.data)
+      setLoading(false)
+    }
   }
-
 
   return <section className="product-details-container">
 
     {loading ? <article className="loader">
     <ThreeDots height="80" width="100%" radius="9" color="#3B3B3B" ariaLabel="three-dots-loading" wrapperStyle={{}} wrapperClassName="" visible={true} />
+    </article> : <></>}
+
+    {productDetails.error ? <article className="error-container">
+      <h2>ERROR</h2>
+      <p>¡Producto no encontado!</p>
+      <img src="assets/error-face.png" alt="error-img" />
     </article> : <></>}
 
     {productDetails.title ? <>
