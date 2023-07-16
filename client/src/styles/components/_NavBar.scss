@@ -4,8 +4,11 @@ nav {
     align-items: center;
     justify-content: space-between;
 
-    & > img {
+    & > a {
         width: 32%;
-        object-fit: contain;
+        & > img {
+            width: 100%;
+            object-fit: contain;
+        }
     }
 }
