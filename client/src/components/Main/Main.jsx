@@ -1,17 +1,14 @@
 import React, { useContext } from "react";
-import Search from './Search';
-import ProductsList from "./ProductsList/ProductsList";
-import ProductsContext from '../../context/productsContext'
-import PageContext from '../../context/pageContext'
+import { Routes, Route } from 'react-router-dom';
+import Home from "./Home";
+import ProductDetails from './ProductDetails'
 
 const Main = () => {
-
-  const { productsList, setProductsList } = useContext(ProductsContext)
-  const { page, setPage } = useContext(PageContext)
-
   return <main>
-    <Search setPage={setPage} setProducts={setProductsList} />
-    <ProductsList page={page} setPage={setPage} setProducts={setProductsList} productsList={productsList} />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/:title" element={<ProductDetails />} />
+    </Routes>
   </main>;
 };
 

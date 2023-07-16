@@ -1,8 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return <nav>
-    <img src="assets/lodeur_logo.png" alt="" />
+    <Link to={'/'}>
+      <img src="assets/lodeur_logo.png" alt="logo-img" />
+    </Link>
   </nav>;
 };
 
