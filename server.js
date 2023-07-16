@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const error404 = require('./middlewares/error404')
 require('dotenv').config()
 
 // Routers
@@ -16,6 +17,8 @@ app.use(express.json({ extended: false }));
 // Routes
 app.use('/api/providers', providersApiRouter)
 app.use('/api/products', productsApiRouter)
+
+app.use(error404); // Middleware Para ruta no encontrada (404)
 
 //* Serve static assets in production, must be at this location of this file
 if (process.env.NODE_ENV === 'production') {
