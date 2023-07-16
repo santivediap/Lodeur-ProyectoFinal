@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import axios from 'axios'
 import { ThreeDots } from  'react-loader-spinner'
 import LoadingContext from "../../../context/loadingContext";
+import PageContext from '../../../context/pageContext'
 
 const Search = ({ setProducts, setPage }) => {
 
@@ -10,9 +11,10 @@ const Search = ({ setProducts, setPage }) => {
   const [errorMessage, setErrorMessage] = useState("")
 
   const { loading, setLoading } = useContext(LoadingContext)
+  const { page, setPagination } = useContext(PageContext)
 
   useEffect(() => {
-    searchProducts({page: 1})
+    searchProducts({page: page[0]})
   }, [])
 
   const changeProductInput = (e) => {
@@ -69,31 +71,32 @@ const Search = ({ setProducts, setPage }) => {
   }
 
   const searchProducts = async (searchParams) => {
-    const { product, provider, sortType, sort, page } = searchParams
+    const { product, provider, sortType, sort } = searchParams
+    const pagination = searchParams.page
 
     if(provider && product) {
       setLoading(true)
       const products = await axios.get(`/api/products?page=1&title=${product}&provider=${provider}&sorttype=${sortType}&sort=${sort}`)
-      setPage([page, `/api/products?page=1&title=${product}&provider=${provider}&sorttype=${sortType}&sort=${sort}`])
+      setPage([pagination, `/api/products?page=1&title=${product}&provider=${provider}&sorttype=${sortType}&sort=${sort}`])
       setLoading(false)
       setProducts(products.data)
     } else {
       if(provider) {
         setLoading(true)
         const products = await axios.get(`/api/products?page=1&provider=${provider}&sorttype=${sortType}&sort=${sort}`)
-        setPage([page, `/api/products?page=1&provider=${provider}&sorttype=${sortType}&sort=${sort}`])
+        setPage([pagination, `/api/products?page=1&provider=${provider}&sorttype=${sortType}&sort=${sort}`])
         setLoading(false)
         setProducts(products.data)
       } else if(product) {
         setLoading(true)
         const products = await axios.get(`/api/products?page=1&title=${product}&sorttype=${sortType}&sort=${sort}`)
-        setPage([page, `/api/products?page=1&title=${product}&sorttype=${sortType}&sort=${sort}`])
+        setPage([pagination, `/api/products?page=1&title=${product}&sorttype=${sortType}&sort=${sort}`])
         setLoading(false)
         setProducts(products.data)
       } else {
         setLoading(true)
-        const products = await axios.get(`/api/products?page=1`)
-        setPage([page, `/api/products?page=1`])
+        const products = await axios.get(page[1])
+        setPage([page[0], page[1]])
         setLoading(false)
         setProducts(products.data)
       }
