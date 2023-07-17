@@ -1,0 +1,227 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "L'odeur - API",
+    "description": "Bienvenido/a a la documentación de L'odeur!\n\nAquí encontrarás toda la información relacionada con las rutas de nuestra API",
+    "version": "1.0.11"
+  },
+  "servers": [
+    {
+      "url": "https://lodeur.onrender.com/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "providers",
+      "description": "Información sobre todos los proveedores existentes en nuestra web"
+    },
+    {
+      "name": "products",
+      "description": "Información sobre todos los productos existentes en nuestra web"
+    }
+  ],
+  "paths": {
+    "/api/providers": {
+      "get": {
+        "tags": [
+          "providers"
+        ],
+        "summary": "Obtener todos los proveedores",
+        "responses": {
+          "200": {
+            "description": "Resultado obtenido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Providers"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Providers"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Obtener todos los productos",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "examples": {
+              "page": {
+                "value": 1,
+                "summary": "Número de página"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "title",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "title": {
+                "value": "Aceite Esotérico de Jacinto",
+                "summary": "Título de producto"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "provider",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "provider": {
+                "value": "El Alquimista",
+                "summary": "Nombre de proveedor"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "sorttype",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "title": {
+                "value": "title",
+                "summary": "Filtrar por título de producto"
+              },
+              "price": {
+                "value": "price",
+                "summary": "Filtrar por precio de producto"
+              },
+              "relevance": {
+                "value": "relevance",
+                "summary": "Filtrar por relevancia de producto"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "desc": {
+                "value": "desc",
+                "summary": "Ordenar de mayor a menor"
+              },
+              "asc": {
+                "value": "asc",
+                "summary": "Ordenar de menor a mayor"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado obtenido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Providers": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "El Alquimista"
+          },
+          "CIF": {
+            "type": "string",
+            "example": "B59401863Q"
+          },
+          "address": {
+            "type": "string",
+            "example": "C / de la Paz, 6"
+          }
+        }
+      },
+      "Products": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Aceite Esotérico de Jacinto"
+          },
+          "description": {
+            "type": "string",
+            "example": "Aceite esotérico especialmente preparado para atraer el amor y la suerte.Se utiliza para ungir velas. Envase de 10ml."
+          },
+          "price": {
+            "type": "number",
+            "example": 8.5
+          },
+          "relevance": {
+            "type": "number",
+            "example": 8
+          },
+          "image": {
+            "type": "string",
+            "example": "https://mundo-de-brujas.com/cdn/shop/products/0101042-1643493343_jpg.png?v=1665663124"
+          },
+          "provider": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "CIF": {
+                "type": "string"
+              },
+              "address": {
+                "type": "string"
+              }
+            },
+            "example": [
+              {
+                "name": "El Alquimista",
+                "CIF": "B589387598",
+                "address": "C / de la Paz, 6"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
