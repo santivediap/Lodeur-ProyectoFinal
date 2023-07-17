@@ -8,5 +8,14 @@ footer {
 
     & > .footer-container {
         padding: 5.965%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        & > span {
+            color: white;
+            font-size: 6vw;
+        }
     }
 }
