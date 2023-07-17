@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "@vitejs/plugin-react": "^4.0.3",
     "axios": "^1.4.0",
     "lodeur": "file:..",
     "normalize.css": "^8.0.1",
@@ -20,7 +19,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "vitest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -43,6 +42,10 @@
   },
   "proxy": "http://localhost:5000",
   "devDependencies": {
-    "create-react-component-folder": "^0.3.7"
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "create-react-component-folder": "^0.3.7",
+    "jsdom": "^22.1.0",
+    "vitest": "^0.33.0"
   }
 }

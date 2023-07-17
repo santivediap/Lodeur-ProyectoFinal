@@ -105,7 +105,7 @@ const Search = ({ setProducts, setPage }) => {
 
   return <>
     <section className="search-container">
-      <h2>¡BUSCA TU PRODUCTO YA!</h2>
+      <h2 id="test">¡BUSCA TU PRODUCTO YA!</h2>
 
       <form onSubmit={submitSearch} className="search-form" action="#">
 
