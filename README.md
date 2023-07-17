@@ -113,6 +113,11 @@ PORT= -> Optional
 NODE_ENV= production -> Only on deployment
 ```
 
+### SEEDER (Initialize data) 💻
+```
+npm run seed_db
+```
+
 ### RUN SCRIPTS 🔖
 ```
 npm run dev
