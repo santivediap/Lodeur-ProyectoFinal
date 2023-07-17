@@ -138,7 +138,7 @@ const productsSeeder = [
         "description": "Extracto Perfume Nido del Pájaro Macua. Amor, fortuna y suerte.\nCuando lo uses la buena suerte te acompañará.\nPon 3 gotas en tu mano cuando estés con tu persona deseada al lado, el perfume realizará la conquista.\nFrasco de 10 ml.",
         "price": 6.99,
         "relevance": 3,
-        "image": "https://aradiacangas.es/wp-content/uploads/2021/08/Extracto-Perfume-Ashe-Nido-del-Pajaro-Macua.jpg",
+        "image": "https://www.sucursaldeluz.com/74-large_default/extracto-pajaro-macua-sin-nid.jpg",
         "provider": "Eleggua"
     },
 
@@ -147,7 +147,7 @@ const productsSeeder = [
         "description": "Extracto de poderoso perfume ASHE realizado según antiguas costumbres. Perfume para atraer el dinero.\nEste producto es uno de los de mayor éxito en santería y su uso es tan fácil como depositar unas gotas discretamente tras las orejas, cuello o muñecas para conseguir los efectos deseados.\nBásicamente, se trata de aceite perfumante mezclado con otros ingredientes secretos.",
         "price": 9.2,
         "relevance": 7,
-        "image": "https://aradiacangas.es/wp-content/uploads/2021/08/Extracto-Perfume-Ashe-Nido-del-Pajaro-Macua.jpg",
+        "image": "https://cdn.shopify.com/s/files/1/0664/1100/4149/products/0102170-1650746719_jpg.png?v=1665528834&width=533",
         "provider": "El Alquimista"
     },
 
